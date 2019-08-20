@@ -1,0 +1,33 @@
+import 'package:community/Pages/Index.dart';
+import 'package:flutter/material.dart';
+import 'package:community/generated/i18n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final i18n = I18n.delegate;
+    return MaterialApp(
+      localizationsDelegates: [
+        i18n,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: i18n.supportedLocales,
+      localeResolutionCallback:
+          i18n.resolution(fallback: new Locale("en", "US")),
+      // title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => Index(),
+        // '/Index': (context) => Index(),
+        // '/second': (context) => SecondScreen(),
+      },
+    );
+  }
+}
