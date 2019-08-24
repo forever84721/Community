@@ -14,6 +14,11 @@ class _IndexState extends State<Index> {
   int _currentIndex = 0;
   List<Widget> pages = List<Widget>();
   List<NavigationBarInfo> navigationBars = [];
+  PageController pageController = PageController(
+    initialPage: 0,
+    keepPage: true,
+  );
+
   @override
   void initState() {
     super.initState();
@@ -22,6 +27,20 @@ class _IndexState extends State<Index> {
     pages.add(PostBrowsing());
     pages.add(PostBrowsing());
     pages.add(PostBrowsing());
+  }
+
+  void pageChanged(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  void bottomTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+      pageController.animateToPage(index,
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
+    });
   }
 
   @override
@@ -49,16 +68,6 @@ class _IndexState extends State<Index> {
             ),
           );
         }).toList(),
-        // BottomNavigationBarItem(
-        //   icon: Icon(
-        //     Icons.picture_in_picture,
-        //     color: Colors.blue,
-        //   ),
-        //   title: Text(
-        //     '',
-        //     style: TextStyle(color: Colors.blue),
-        //   ),
-        // ),
         currentIndex: _currentIndex,
         onTap: (int index) {
           setState(() {
@@ -66,7 +75,13 @@ class _IndexState extends State<Index> {
           });
         },
       ),
-      body: pages[_currentIndex],
+      body: PageView(
+        controller: pageController,
+        onPageChanged: (index) {
+          pageChanged(index);
+        },
+        children: pages,
+      ),
     );
   }
 }
