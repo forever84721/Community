@@ -1,5 +1,5 @@
 import 'package:community/Widget/Post.dart';
-import 'package:community/Widget/SearchBar.dart';
+// import 'package:community/Widget/SearchBar.dart';
 // import 'package:community/generated/i18n.dart';
 import 'package:flutter/material.dart';
 
