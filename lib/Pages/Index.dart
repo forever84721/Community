@@ -11,6 +11,9 @@ class Index extends StatefulWidget {
 
 class _IndexState extends State<Index> {
   bool init = false;
+  // bool isVisible = true;
+  double bottomNavigationBarHeight = 60;
+  int oldIndex = 0;
   int _currentIndex = 0;
   List<Widget> pages = List<Widget>();
   List<NavigationBarInfo> navigationBars = [];
@@ -22,62 +25,80 @@ class _IndexState extends State<Index> {
   @override
   void initState() {
     super.initState();
-    // print(Util.context);
-    // print("123");
-    pages.add(PostBrowsing());
-    pages.add(PostBrowsing());
-    pages.add(PostBrowsing());
+    pages.add(PostBrowsing(notifyParent: refresh));
+    pages.add(PostBrowsing(notifyParent: refresh));
+    pages.add(PostBrowsing(notifyParent: refresh));
   }
 
   void pageChanged(int index) {
     setState(() {
       _currentIndex = index;
+      if ((oldIndex - index).abs() == 1) {
+        pageController.animateToPage(index,
+            duration: Duration(milliseconds: 600), curve: Curves.ease);
+      } else {
+        pageController.jumpToPage(index);
+      }
+      oldIndex = index;
     });
   }
 
-  void bottomTapped(int index) {
+  refresh(double h) {
     setState(() {
-      _currentIndex = index;
-      pageController.animateToPage(index,
-          duration: Duration(milliseconds: 500), curve: Curves.ease);
+      bottomNavigationBarHeight = h;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     if (!init) {
+      //I18n.of(context).Post
+      navigationBars.add(
+          NavigationBarInfo("", Icon(Icons.picture_in_picture), Colors.blue));
       navigationBars.add(NavigationBarInfo(
-          I18n.of(context).Post, Icon(Icons.picture_in_picture), Colors.blue));
-      navigationBars.add(
-          NavigationBarInfo("", Icon(Icons.picture_in_picture), Colors.blue));
-      navigationBars.add(
-          NavigationBarInfo("", Icon(Icons.picture_in_picture), Colors.blue));
+          "", Icon(Icons.picture_in_picture_alt), Colors.blue));
+      navigationBars
+          .add(NavigationBarInfo("", Icon(Icons.picture_as_pdf), Colors.blue));
       init = true;
     }
     return Scaffold(
       drawer: GeneralDrawer(),
       appBar: SearchBar(title: I18n.of(context).Post),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: navigationBars.map((item) {
-          return BottomNavigationBarItem(
-            icon: item.icon,
-            title: Text(
-              item.title,
-              style: TextStyle(color: item.color),
+      bottomNavigationBar: AnimatedContainer(
+        duration: Duration(milliseconds: 500),
+        height: bottomNavigationBarHeight,
+        decoration: new BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: Colors.grey,
+              width: 1.0,
             ),
-          );
-        }).toList(),
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+          ),
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          items: navigationBars.map((item) {
+            return BottomNavigationBarItem(
+              icon: item.icon,
+              title: Text(
+                item.title,
+                style: TextStyle(color: item.color),
+              ),
+            );
+          }).toList(),
+          currentIndex: _currentIndex,
+          onTap: (int index) {
+            pageChanged(index);
+          },
+        ),
       ),
       body: PageView(
         controller: pageController,
-        onPageChanged: (index) {
+        onPageChanged: (
+          index,
+        ) {
           pageChanged(index);
         },
         children: pages,

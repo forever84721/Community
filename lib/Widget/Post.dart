@@ -36,9 +36,8 @@ class _PostState extends State<Post> {
     return ClipRRect(
       borderRadius: new BorderRadius.circular(10.0),
       child: Padding(
-        padding: const EdgeInsets.all(4),
+        padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
         child: Container(
-          // height: 250,
           // width: MediaQuery.of(context).size.width,
           color: Colors.white,
           child: Column(
