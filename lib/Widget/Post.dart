@@ -1,6 +1,10 @@
+import 'package:community/Models/index.dart';
 import 'package:flutter/material.dart';
 
 class Post extends StatefulWidget {
+  final PostViewModel postData;
+
+  const Post({Key key, this.postData}) : super(key: key);
   @override
   _PostState createState() => _PostState();
 }

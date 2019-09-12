@@ -1,6 +1,6 @@
+import 'package:community/Models/index.dart';
+import 'package:community/Service/PostService.dart';
 import 'package:community/Widget/Post.dart';
-// import 'package:community/Widget/SearchBar.dart';
-// import 'package:community/generated/i18n.dart';
 import 'package:flutter/material.dart';
 
 class PostBrowsing extends StatefulWidget {
@@ -12,6 +12,8 @@ class PostBrowsing extends StatefulWidget {
 
 class _PostBrowsingState extends State<PostBrowsing>
     with AutomaticKeepAliveClientMixin {
+  List<PostViewModel> data;
+
   double oldOffset = 0;
   ScrollController _controller;
   _scrollListener() {
@@ -36,6 +38,10 @@ class _PostBrowsingState extends State<PostBrowsing>
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
     print("initState");
+    (() async {
+      PostService ps = new PostService();
+      data = await ps.getRandomPost();
+    })();
   }
 
   @override
@@ -47,20 +53,9 @@ class _PostBrowsingState extends State<PostBrowsing>
       body: ListView(
         // padding: const EdgeInsets.all(8.0),
         controller: _controller,
-        children: <Widget>[
-          Post(),
-          Post(),
-          Post(),
-          Post(),
-          Post(),
-          Post(),
-          Post(),
-          Post(),
-          Post(),
-          Post(),
-          Post(),
-          Post(),
-        ],
+        children: data.map((item) {
+          return Post(postData: item);
+        }).toList(),
       ),
     );
   }
