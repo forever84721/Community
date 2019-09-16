@@ -1,5 +1,6 @@
 import 'package:community/Models/index.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Post extends StatefulWidget {
   final PostViewModel postData;
@@ -10,6 +11,7 @@ class Post extends StatefulWidget {
 }
 
 class _PostState extends State<Post> {
+  var formatter = new DateFormat('yyyy-MM-dd HH:mm');
   Column buildButtonColumn(IconData icon, String label) {
     Color color = Theme.of(context).primaryColor;
     return new Column(
@@ -67,10 +69,11 @@ class _PostState extends State<Post> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "靠北工程師",
+                        widget.postData.name,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      Text("昨天下午4:49"),
+                      // Text("昨天下午4:49"),
+                      Text(formatter.format(widget.postData.postTime)),
                     ],
                   )
                 ],
@@ -81,7 +84,8 @@ class _PostState extends State<Post> {
                   children: [
                     Expanded(
                       child: Text(
-                          "#純靠北工程師1t4\n\n錢才是真的，加薪，升官，未來性，會培養，給爛薪水的別指望會有未來性，都給不出正常薪資了，怎會在花時間跟金錢去培養你呢?\n\n📢 匿名發文請至 https://kaobei.eng\n🥙 全平台留言 https://kaobei.engi"),
+                          // "#純靠北工程師1t4\n\n錢才是真的，加薪，升官，未來性，會培養，給爛薪水的別指望會有未來性，都給不出正常薪資了，怎會在花時間跟金錢去培養你呢?\n\n📢 匿名發文請至 https://kaobei.eng\n🥙 全平台留言 https://kaobei.engi"),
+                          widget.postData.content),
                     ),
                   ],
                 ),

@@ -53,7 +53,7 @@ class _PostBrowsingState extends State<PostBrowsing>
       body: ListView(
         // padding: const EdgeInsets.all(8.0),
         controller: _controller,
-        children: data.map((item) {
+        children: (data).map((item) {
           return Post(postData: item);
         }).toList(),
       ),
