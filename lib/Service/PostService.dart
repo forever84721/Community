@@ -50,7 +50,7 @@ class PostService {
     //   return a.imageName;
     // }));
     http.Response response = await http.get(
-      "http://192.168.1.198:8080/api/Post/GetRandomPost", //GetRandomPost
+      "http://192.168.20.13:8080/api/Post/GetRandomPost", //GetRandomPost
       // body: '{"email":"forever84721@yahoo.com.tw","password":"asdf"}',
       headers: {"Content-Type": "application/json"}, //Accept
     );
