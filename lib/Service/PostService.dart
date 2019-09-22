@@ -50,7 +50,9 @@ class PostService {
     //   return a.imageName;
     // }));
     http.Response response = await http.get(
-      "http://192.168.20.13:8080/api/Post/GetRandomPost", //GetRandomPost
+      // "http://192.168.20.13:8080/api/Post/GetRandomPost", //GetRandomPost
+      "http://192.168.1.198:8080/api/Post/GetRandomPost",
+      // "http://localhost:56103/api/Post/GetRandomPost",
       // body: '{"email":"forever84721@yahoo.com.tw","password":"asdf"}',
       headers: {"Content-Type": "application/json"}, //Accept
     );
@@ -58,7 +60,7 @@ class PostService {
     BaseResponse<List<PostViewModel>> decoded =
         PostViewModelListResponse.fromJson(json.decode(response.body));
     print(decoded.success);
-    print(decoded.message);
+    print(decoded.msg);
     print(decoded.data);
     return decoded.data;
   }

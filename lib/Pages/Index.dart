@@ -35,7 +35,7 @@ class _IndexState extends State<Index> {
       _currentIndex = index;
       if ((oldIndex - index).abs() == 1) {
         pageController.animateToPage(index,
-            duration: Duration(milliseconds: 600), curve: Curves.ease);
+            duration: Duration(milliseconds: 500), curve: Curves.ease);
       } else {
         pageController.jumpToPage(index);
       }

@@ -41,6 +41,8 @@ class I18n implements WidgetsLocalizations {
   String get SearchDotDotDot => "Search...";
   /// "Post"
   String get Post => "Post";
+  /// "Login"
+  String get Login => "Login";
 }
 
 class _I18n_en_US extends I18n {
@@ -65,6 +67,9 @@ class _I18n_zh_TW extends I18n {
   /// "貼文"
   @override
   String get Post => "貼文";
+  /// "登入"
+  @override
+  String get Login => "登入";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;

@@ -1,4 +1,6 @@
+import 'package:community/Common/Routes.dart';
 import 'package:community/Pages/Index.dart';
+import 'package:community/Pages/Login.dart';
 import 'package:flutter/material.dart';
 import 'package:community/generated/i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -22,10 +24,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: Routes.login,
       routes: {
-        '/': (context) => Index(),
-        // '/Index': (context) => Index(),
+        Routes.login: (context) => Login(),
+        Routes.index: (context) => Index(),
         // '/second': (context) => SecondScreen(),
       },
     );

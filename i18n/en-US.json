@@ -2,5 +2,6 @@
   "greetTo": "Hello {name}",
   "AppTitle": "Title",
   "SearchDotDotDot": "Search...",
-  "Post": "Post"
+  "Post": "Post",
+  "Login": "Login"
 }
