@@ -37,7 +37,6 @@ class _PostBrowsingState extends State<PostBrowsing>
     super.initState();
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
-    print("initState");
     (() async {
       PostService ps = new PostService();
       var datatemp = await ps.getRandomPost();

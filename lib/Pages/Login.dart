@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'package:community/Common/ConstString.dart';
 import 'package:community/Common/Routes.dart';
+import 'package:community/Common/Util.dart';
 import 'package:community/Models/index.dart';
 import 'package:community/generated/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -13,12 +16,31 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   Map<String, dynamic> loginInfo;
-
+  SharedPreferences prefs;
   @override
   void initState() {
-    // loginInfo = new Map<String, dynamic>()={'a':'','':''};
-    loginInfo = {'Email': '', 'Password': ''};
     super.initState();
+    (() async {
+      prefs = await SharedPreferences.getInstance();
+      print(prefs.get("token"));
+    })();
+    // SharedPreferences.getInstance().then((prefs) {
+    //   setState(() {
+    //     this.prefs = prefs;
+    //   });
+    //   // prefs.remove(ConstString.token);
+    //   print(prefs.get("token"));
+    //   prefs.setString(ConstString.token, "1223");
+    //   print(prefs.get("token"));
+    //   if (prefs.get(ConstString.token) == null) {
+    //     print("1111111111");
+    //   } else {
+    //     print("2222222222");
+    //     // Navigator.pushReplacementNamed(context, Routes.index);
+    //   }
+    //   Util.sharedPreferences = prefs;
+    // });
+    loginInfo = {'Email': '', 'Password': ''};
   }
 
   void login() async {
@@ -33,6 +55,8 @@ class _LoginState extends State<Login> {
     BaseResponse<String> res =
         BaseResponse.fromJson(json.decode(response.body));
     if (res.success) {
+      prefs.setString(ConstString.token, res.data);
+      print("ConstString.token:" + prefs.get(ConstString.token));
       Navigator.pushReplacementNamed(context, Routes.index);
     } else {
       Fluttertoast.showToast(

@@ -1,8 +1,12 @@
+import 'package:community/Common/ConstString.dart';
+import 'package:community/Common/Routes.dart';
+import 'package:community/Common/Util.dart';
 import 'package:community/Pages/PostBrowsing.dart';
 import 'package:community/Widget/GeneralDrawer.dart';
 import 'package:community/Widget/SearchBar.dart';
 import 'package:community/generated/i18n.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Index extends StatefulWidget {
   @override
@@ -25,6 +29,7 @@ class _IndexState extends State<Index> {
   @override
   void initState() {
     super.initState();
+
     pages.add(PostBrowsing(notifyParent: refresh));
     pages.add(PostBrowsing(notifyParent: refresh));
     pages.add(PostBrowsing(notifyParent: refresh));

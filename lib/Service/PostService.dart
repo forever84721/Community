@@ -59,9 +59,9 @@ class PostService {
     // print('responseBody:${response.body}');
     BaseResponse<List<PostViewModel>> decoded =
         PostViewModelListResponse.fromJson(json.decode(response.body));
-    print(decoded.success);
-    print(decoded.msg);
-    print(decoded.data);
+    // print(decoded.success);
+    // print(decoded.msg);
+    // print(decoded.data);
     return decoded.data;
   }
 }

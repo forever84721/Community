@@ -3,15 +3,16 @@ class BaseResponse<T> {
   String msg;
   T data;
 
-  BaseResponse._fromJson(Map<String, dynamic> parsedJson)
-      : success = parsedJson['Success'],
-        msg = parsedJson['Msg'];
+  BaseResponse._fromJson(Map<String, dynamic> parsedJson) {
+    success = parsedJson['Success'];
+    msg = parsedJson['Msg'];
+  }
 
   factory BaseResponse.fromJson(Map<String, dynamic> json) {
     if (T == int) {
       return IntResponse.fromJson(json) as BaseResponse<T>;
     } else if (T == String) {
-      return BaseResponse._fromJson(json);
+      return StringResponse.fromJson(json) as BaseResponse<T>;
     } else if (T == getType<List<PostViewModel>>()) {
       return PostViewModelListResponse.fromJson(json) as BaseResponse<T>;
     }
@@ -26,6 +27,12 @@ Type getType<T>() {
 class IntResponse extends BaseResponse<int> {
   IntResponse.fromJson(Map<String, dynamic> json) : super._fromJson(json) {
     this.data = int.parse(json["Data"]);
+  }
+}
+
+class StringResponse extends BaseResponse<String> {
+  StringResponse.fromJson(Map<String, dynamic> json) : super._fromJson(json) {
+    this.data = (json["Data"]);
   }
 }
 
