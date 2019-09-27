@@ -20,7 +20,7 @@ class _PostState extends State<Post> {
       children: [
         new Icon(icon, color: color),
         new Container(
-          width: (MediaQuery.of(context).size.width - 46) / 3,
+          width: (MediaQuery.of(context).size.width - 0) / 3,
           // margin: const EdgeInsets.only(top: 8.0),
           child: Center(
             child: Text(
@@ -83,9 +83,7 @@ class _PostState extends State<Post> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text(
-                          // "#純靠北工程師1t4\n\n錢才是真的，加薪，升官，未來性，會培養，給爛薪水的別指望會有未來性，都給不出正常薪資了，怎會在花時間跟金錢去培養你呢?\n\n📢 匿名發文請至 https://kaobei.eng\n🥙 全平台留言 https://kaobei.engi"),
-                          widget.postData.content),
+                      child: Text(widget.postData.content),
                     ),
                   ],
                 ),

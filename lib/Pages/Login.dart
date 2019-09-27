@@ -1,11 +1,9 @@
-import 'dart:convert';
+import 'package:community/Api/Api.dart';
 import 'package:community/Common/ConstString.dart';
 import 'package:community/Common/Routes.dart';
 import 'package:community/Common/Util.dart';
-import 'package:community/Models/index.dart';
 import 'package:community/generated/i18n.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,47 +14,28 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   Map<String, dynamic> loginInfo;
-  SharedPreferences prefs;
   @override
   void initState() {
     super.initState();
-    (() async {
-      prefs = await SharedPreferences.getInstance();
-      print(prefs.get("token"));
-    })();
-    // SharedPreferences.getInstance().then((prefs) {
-    //   setState(() {
-    //     this.prefs = prefs;
-    //   });
-    //   // prefs.remove(ConstString.token);
-    //   print(prefs.get("token"));
-    //   prefs.setString(ConstString.token, "1223");
-    //   print(prefs.get("token"));
-    //   if (prefs.get(ConstString.token) == null) {
-    //     print("1111111111");
-    //   } else {
-    //     print("2222222222");
-    //     // Navigator.pushReplacementNamed(context, Routes.index);
-    //   }
-    //   Util.sharedPreferences = prefs;
-    // });
+    SharedPreferences.getInstance().then((prefs) {
+      Util.sharedPreferences = prefs;
+      // prefs.remove(ConstString.token);
+      print(Util.sharedPreferences.get("token"));
+      if (Util.sharedPreferences.get(ConstString.token) != null) {
+        Navigator.pushReplacementNamed(context, Routes.index);
+      }
+    });
     loginInfo = {'Email': '', 'Password': ''};
   }
 
   void login() async {
     print('loginInfo:$loginInfo');
-    var url = 'http://192.168.1.198:8080/api/Auth/Login';
-    http.Response response = await http.post(
-      url,
-      body: json.encode(loginInfo),
-      headers: {"Content-Type": "application/json"}, //Accept
-    );
-    print('responseBody:${response.body}');
-    BaseResponse<String> res =
-        BaseResponse.fromJson(json.decode(response.body));
+
+    var res = await Api.login(loginInfo);
     if (res.success) {
-      prefs.setString(ConstString.token, res.data);
-      print("ConstString.token:" + prefs.get(ConstString.token));
+      Util.sharedPreferences.setString(ConstString.token, res.data);
+      print(
+          "ConstString.token:" + Util.sharedPreferences.get(ConstString.token));
       Navigator.pushReplacementNamed(context, Routes.index);
     } else {
       Fluttertoast.showToast(

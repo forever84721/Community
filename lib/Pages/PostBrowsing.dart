@@ -1,5 +1,5 @@
+import 'package:community/Api/Api.dart';
 import 'package:community/Models/index.dart';
-import 'package:community/Service/PostService.dart';
 import 'package:community/Widget/Post.dart';
 import 'package:flutter/material.dart';
 
@@ -12,13 +12,11 @@ class PostBrowsing extends StatefulWidget {
 
 class _PostBrowsingState extends State<PostBrowsing>
     with AutomaticKeepAliveClientMixin {
-  List<PostViewModel> data;
-
+  List<PostViewModel> data = [];
   double oldOffset = 0;
   ScrollController _controller;
+
   _scrollListener() {
-    // print(oldOffset);
-    // print(_controller.offset);
     var deltaH = oldOffset - _controller.offset;
     if (deltaH < 0) {
       deltaH = 0;
@@ -38,10 +36,9 @@ class _PostBrowsingState extends State<PostBrowsing>
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
     (() async {
-      PostService ps = new PostService();
-      var datatemp = await ps.getRandomPost();
+      var res = await Api.getRandomPost();
       setState(() {
-        data = datatemp;
+        data = res.success ? res.data : [];
       });
     })();
   }
@@ -55,7 +52,7 @@ class _PostBrowsingState extends State<PostBrowsing>
       body: ListView(
         // padding: const EdgeInsets.all(8.0),
         controller: _controller,
-        children: (data ?? []).map((item) {
+        children: data.map((item) {
           return Post(postData: item);
         }).toList(),
       ),
