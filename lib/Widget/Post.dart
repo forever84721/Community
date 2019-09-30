@@ -17,9 +17,11 @@ class _PostState extends State<Post> {
     print("testmethod");
   }
 
-  Widget buildButtonColumn(IconData icon, String label) {
+  Widget buildButtonColumn(IconData icon, String label, [int likeType = 0]) {
     // Color color = Theme.of(context).primaryColor;
-    Color color = Color.fromARGB(200, 100, 100, 100);
+    Color color = likeType == 0
+        ? Color.fromARGB(200, 100, 100, 100)
+        : Theme.of(context).primaryColor;
     return Material(
       child: InkWell(
         onTap: testmethod,
@@ -137,7 +139,8 @@ class _PostState extends State<Post> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    buildButtonColumn(Icons.star, I18n.of(context).Like),
+                    buildButtonColumn(Icons.star, I18n.of(context).Like,
+                        widget.postData.likeType),
                     buildButtonColumn(Icons.chat, I18n.of(context).Comment),
                     buildButtonColumn(Icons.share, I18n.of(context).Share),
                   ],
