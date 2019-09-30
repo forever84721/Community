@@ -1,4 +1,5 @@
 import 'package:community/Models/index.dart';
+import 'package:community/generated/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -12,28 +13,38 @@ class Post extends StatefulWidget {
 
 class _PostState extends State<Post> {
   var formatter = new DateFormat('yyyy-MM-dd HH:mm');
-  Column buildButtonColumn(IconData icon, String label) {
-    Color color = Theme.of(context).primaryColor;
-    return new Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        new Icon(icon, color: color),
-        new Container(
-          width: (MediaQuery.of(context).size.width - 0) / 3,
-          // margin: const EdgeInsets.only(top: 8.0),
-          child: Center(
-            child: Text(
-              label,
-              style: new TextStyle(
-                fontSize: 12.0,
-                fontWeight: FontWeight.w400,
-                color: color,
+  void testmethod() {
+    print("testmethod");
+  }
+
+  Widget buildButtonColumn(IconData icon, String label) {
+    // Color color = Theme.of(context).primaryColor;
+    Color color = Color.fromARGB(200, 100, 100, 100);
+    return Material(
+      child: InkWell(
+        onTap: testmethod,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            new Icon(icon, color: color),
+            new Container(
+              width: (MediaQuery.of(context).size.width - 0) / 3,
+              // margin: const EdgeInsets.only(top: 8.0),
+              child: Center(
+                child: Text(
+                  label,
+                  style: new TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w400,
+                    color: color,
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -89,6 +100,32 @@ class _PostState extends State<Post> {
                 ),
               ),
               Container(
+                // padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
+                // decoration: new BoxDecoration(
+                //     border: Border(
+                //   top: BorderSide(
+                //     color: Colors.grey,
+                //     width: 1.0,
+                //   ),
+                // )),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(widget.postData.numOfLike.toString() +
+                          I18n.of(context).Like),
+                      Spacer(),
+                      Text(widget.postData.numOfComment.toString() +
+                          I18n.of(context).Comment),
+                      Text("-"),
+                      Text(widget.postData.numOfShare.toString() +
+                          I18n.of(context).Share),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
                 padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
                 decoration: new BoxDecoration(
                     border: Border(
@@ -100,9 +137,9 @@ class _PostState extends State<Post> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    buildButtonColumn(Icons.star, 'Like'),
-                    buildButtonColumn(Icons.chat, 'Chat'),
-                    buildButtonColumn(Icons.share, 'SHARE'),
+                    buildButtonColumn(Icons.star, I18n.of(context).Like),
+                    buildButtonColumn(Icons.chat, I18n.of(context).Comment),
+                    buildButtonColumn(Icons.share, I18n.of(context).Share),
                   ],
                 ),
               ),

@@ -3,5 +3,8 @@
   "AppTitle": "Title",
   "SearchDotDotDot": "Search...",
   "Post": "Post",
-  "Login": "Login"
+  "Login": "Login",
+  "Like": "Like",
+  "Comment": "Comment",
+  "Share": "Share"
 }

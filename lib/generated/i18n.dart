@@ -43,6 +43,12 @@ class I18n implements WidgetsLocalizations {
   String get Post => "Post";
   /// "Login"
   String get Login => "Login";
+  /// "Like"
+  String get Like => "Like";
+  /// "Comment"
+  String get Comment => "Comment";
+  /// "Share"
+  String get Share => "Share";
 }
 
 class _I18n_en_US extends I18n {
@@ -70,6 +76,15 @@ class _I18n_zh_TW extends I18n {
   /// "登入"
   @override
   String get Login => "登入";
+  /// "讚"
+  @override
+  String get Like => "讚";
+  /// "留言"
+  @override
+  String get Comment => "留言";
+  /// "分享"
+  @override
+  String get Share => "分享";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
