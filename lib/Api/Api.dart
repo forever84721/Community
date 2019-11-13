@@ -8,25 +8,25 @@ import 'package:http/http.dart' as http;
 
 class Api {
   static Future<String> _post(String action, dynamic data) async {
+    var token = Util.sharedPreferences.get(ConstString.token) ?? "";
     http.Response response = await http.post(
       '${Environment.current.apiUrl}/$action',
       body: json.encode(data),
       headers: {
         "Content-Type": "application/json",
-        "Authorization":
-            "Bearer ${Util.sharedPreferences.get(ConstString.token)}"
+        "Authorization": "Bearer $token"
       },
     );
     return response.body;
   }
 
   static Future<String> _get<T>(String action) async {
+    var token = Util.sharedPreferences.get(ConstString.token) ?? "";
     http.Response response = await http.get(
       '${Environment.current.apiUrl}/$action',
       headers: {
         "Content-Type": "application/json",
-        "Authorization":
-            "Bearer ${Util.sharedPreferences.get(ConstString.token)}"
+        "Authorization": "Bearer $token"
       },
     );
     return response.body;
@@ -39,6 +39,7 @@ class Api {
 
   static Future<BaseResponse<List<PostViewModel>>> getRandomPost() async {
     var body = await _get("Post/GetRandomPost");
+    print(body);
     return PostViewModelListResponse.fromJson(json.decode(body));
   }
 }

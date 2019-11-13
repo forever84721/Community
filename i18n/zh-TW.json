@@ -3,5 +3,8 @@
   "AppTitle": "標題",
   "SearchDotDotDot": "搜尋...",
   "Post": "貼文",
-  "Login": "登入"
+  "Login": "登入",
+  "Like": "讚",
+  "Comment": "留言",
+  "Share": "分享"
 }

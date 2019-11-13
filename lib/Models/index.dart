@@ -56,6 +56,7 @@ class PostViewModel {
   int numOfShare;
   int postId;
   DateTime postTime;
+  int likeType;
 
   PostViewModel(
       {this.content,
@@ -65,7 +66,8 @@ class PostViewModel {
       this.numOfLike,
       this.numOfShare,
       this.postId,
-      this.postTime});
+      this.postTime,
+      this.likeType});
 
   factory PostViewModel.fromJson(Map<String, dynamic> json) {
     return PostViewModel(
@@ -77,6 +79,7 @@ class PostViewModel {
       numOfShare: json['NumOfShare'],
       postId: json['PostId'],
       postTime: DateTime.parse(json['PostTime']),
+      likeType: json['LikeType'],
     );
   }
 

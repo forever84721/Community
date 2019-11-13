@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:community/Api/Api.dart';
 import 'package:community/Models/index.dart';
 import 'package:community/Widget/Post.dart';
@@ -15,19 +17,24 @@ class _PostBrowsingState extends State<PostBrowsing>
   List<PostViewModel> data = [];
   double oldOffset = 0;
   ScrollController _controller;
-
+  bool delay = false;
   _scrollListener() {
     var deltaH = oldOffset - _controller.offset;
-    if (deltaH < 0) {
-      deltaH = 0;
-    } else if (deltaH > 0) {
-      deltaH = 60;
+    if (!delay) {
+      if (deltaH < 0) {
+        deltaH = 0;
+      } else if (deltaH > 0) {
+        deltaH = 60;
+      }
+      delay = true;
+      oldOffset = _controller.offset;
+      setState(() {
+        widget.notifyParent(deltaH);
+      });
+      Timer(Duration(milliseconds: 500), () {
+        delay = false;
+      });
     }
-    oldOffset = _controller.offset;
-    // print("newH:" + deltaH.toString());
-    setState(() {
-      widget.notifyParent(deltaH);
-    });
   }
 
   @override
