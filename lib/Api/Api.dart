@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:community/Common/ConstString.dart';
+import 'package:community/Common/Util.dart';
 import 'package:community/Environments/Environment.dart';
 import 'package:community/Models/index.dart';
 import 'package:http/http.dart' as http;
@@ -9,7 +11,11 @@ class Api {
     http.Response response = await http.post(
       '${Environment.current.apiUrl}/$action',
       body: json.encode(data),
-      headers: {"Content-Type": "application/json"},
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization":
+            "Bearer ${Util.sharedPreferences.get(ConstString.token)}"
+      },
     );
     return response.body;
   }
@@ -17,7 +23,11 @@ class Api {
   static Future<String> _get<T>(String action) async {
     http.Response response = await http.get(
       '${Environment.current.apiUrl}/$action',
-      headers: {"Content-Type": "application/json"},
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization":
+            "Bearer ${Util.sharedPreferences.get(ConstString.token)}"
+      },
     );
     return response.body;
   }

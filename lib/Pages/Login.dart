@@ -19,8 +19,8 @@ class _LoginState extends State<Login> {
     super.initState();
     SharedPreferences.getInstance().then((prefs) {
       Util.sharedPreferences = prefs;
-      // prefs.remove(ConstString.token);
-      print(Util.sharedPreferences.get("token"));
+      prefs.remove(ConstString.token);
+      print(Util.sharedPreferences.get(ConstString.token));
       if (Util.sharedPreferences.get(ConstString.token) != null) {
         Navigator.pushReplacementNamed(context, Routes.index);
       }
