@@ -1,6 +1,7 @@
 import 'package:community/Common/Routes.dart';
 import 'package:community/Pages/Index.dart';
 import 'package:community/Pages/Login.dart';
+import 'package:community/Widget/ProgressDialog/ProgressDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:community/generated/i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -26,10 +27,17 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: Routes.login,
       routes: {
-        Routes.login: (context) => Login(),
+        Routes.login: (context) =>
+            ProgressDialog(loading: LoadingStatus(false), child: Login()),
         Routes.index: (context) => Index(),
         // '/second': (context) => SecondScreen(),
       },
     );
+    // List<Widget> widgetList = [];
+    // widgetList.add(CircularProgressIndicator());
+    // widgetList.add(app);
+    // return Stack(
+    //   children: widgetList,
+    // );
   }
 }

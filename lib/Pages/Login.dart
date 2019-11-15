@@ -2,18 +2,23 @@ import 'package:community/Api/Api.dart';
 import 'package:community/Common/ConstString.dart';
 import 'package:community/Common/Routes.dart';
 import 'package:community/Common/Util.dart';
+import 'package:community/Widget/ProgressDialog/IProgressDialog.dart';
+import 'package:community/Widget/ProgressDialog/ProgressDialog.dart';
 import 'package:community/generated/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
+  Function(bool tf) notifyParent;
+
   @override
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
   Map<String, dynamic> loginInfo;
+  bool isLoding = false;
   @override
   void initState() {
     super.initState();
@@ -30,7 +35,10 @@ class _LoginState extends State<Login> {
 
   void login() async {
     print('loginInfo:$loginInfo');
-
+    setState(() {
+      // isLoding = true;
+      this.widget.notifyParent(true);
+    });
     var res = await Api.login(loginInfo);
     if (res.success) {
       Util.sharedPreferences.setString(ConstString.token, res.data);
@@ -47,11 +55,16 @@ class _LoginState extends State<Login> {
           textColor: Colors.white,
           fontSize: 16.0);
     }
+    setState(() {
+      // isLoding = false;
+      // this.widget.progressDialog.loading.value = false;
+      this.widget.notifyParent(false);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    var app = Scaffold(
       appBar: AppBar(
         title: Text(I18n.of(context).Login),
       ),
@@ -64,7 +77,7 @@ class _LoginState extends State<Login> {
             decoration: new BoxDecoration(),
             child: Container(
               decoration: new BoxDecoration(
-                color: Colors.yellowAccent,
+                color: Colors.lightBlueAccent,
                 border: new Border.all(color: Colors.blueGrey, width: 5),
                 borderRadius: BorderRadius.all(
                   Radius.circular(15.0),
@@ -170,5 +183,23 @@ class _LoginState extends State<Login> {
         ],
       ),
     );
+    List<Widget> widgetList = [];
+    widgetList.add(app);
+    if (isLoding) {
+      widgetList.add(
+        Opacity(
+            opacity: 0.8,
+            child: ModalBarrier(
+              color: Colors.black87,
+            )),
+      );
+      widgetList.add(Center(
+        child: CircularProgressIndicator(),
+      ));
+    }
+    return Stack(
+      children: widgetList,
+    );
+    // return app;
   }
 }

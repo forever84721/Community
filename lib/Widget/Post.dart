@@ -143,6 +143,7 @@ class _PostState extends State<Post> {
                         widget.postData.likeType),
                     buildButtonColumn(Icons.chat, I18n.of(context).Comment),
                     buildButtonColumn(Icons.share, I18n.of(context).Share),
+                    // CircularProgressIndicator(),
                   ],
                 ),
               ),
