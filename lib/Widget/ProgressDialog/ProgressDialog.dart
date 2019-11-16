@@ -1,42 +1,9 @@
-import 'package:community/Pages/Login.dart';
+import 'package:community/Widget/ProgressDialog/IProgressDialog.dart';
 import 'package:flutter/material.dart';
-
-// class ProgressDialog extends StatelessWidget {
-//   final bool loading;
-//   final Widget child;
-//   void setLoading(bool tf){
-//     setsta
-//   }
-//   ProgressDialog({Key key, this.loading, this.child}) : super(key: key);
-//   @override
-//   Widget build(BuildContext context) {
-//     List<Widget> widgetList = [];
-//     (widgetList as Login).progressDialog = this;
-//     widgetList.add(child);
-//     if (loading) {
-//       widgetList.add(
-//         Opacity(
-//           opacity: 0.8,
-//           child: ModalBarrier(
-//             color: Colors.black87,
-//           ),
-//         ),
-//       );
-//       widgetList.add(
-//         Center(
-//           child: CircularProgressIndicator(),
-//         ),
-//       );
-//     }
-//     return Stack(
-//       children: widgetList,
-//     );
-//   }
-// }
 
 class ProgressDialog extends StatefulWidget {
   final LoadingStatus loading;
-  final Widget child;
+  final IProgressDialog child;
 
   const ProgressDialog({Key key, this.loading, this.child}) : super(key: key);
 
@@ -69,8 +36,8 @@ class _ProgressDialogState extends State<ProgressDialog>
   @override
   Widget build(BuildContext context) {
     List<Widget> widgetList = [];
-    (this.widget.child as Login).notifyParent = setLoading;
-    widgetList.add(this.widget.child);
+    this.widget.child.setLoading = setLoading;
+    widgetList.add(this.widget.child as Widget);
     if (this.widget.loading.value) {
       widgetList.add(
         Opacity(

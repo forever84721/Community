@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
       routes: {
         Routes.login: (context) =>
             ProgressDialog(loading: LoadingStatus(false), child: Login()),
-        Routes.index: (context) => Index(),
+        Routes.index: (context) =>
+            ProgressDialog(loading: LoadingStatus(false), child: Index()),
         // '/second': (context) => SecondScreen(),
       },
     );

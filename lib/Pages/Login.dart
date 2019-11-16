@@ -3,15 +3,13 @@ import 'package:community/Common/ConstString.dart';
 import 'package:community/Common/Routes.dart';
 import 'package:community/Common/Util.dart';
 import 'package:community/Widget/ProgressDialog/IProgressDialog.dart';
-import 'package:community/Widget/ProgressDialog/ProgressDialog.dart';
 import 'package:community/generated/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Login extends StatefulWidget {
-  Function(bool tf) notifyParent;
-
+// ignore: must_be_immutable
+class Login extends StatefulWidget with IProgressDialog {
   @override
   _LoginState createState() => _LoginState();
 }
@@ -19,15 +17,22 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   Map<String, dynamic> loginInfo;
   bool isLoding = false;
+  bool initLoginStatus = false;
   @override
   void initState() {
     super.initState();
     SharedPreferences.getInstance().then((prefs) {
       Util.sharedPreferences = prefs;
-      prefs.remove(ConstString.token);
+      // prefs.remove(ConstString.token);
       print(Util.sharedPreferences.get(ConstString.token));
       if (Util.sharedPreferences.get(ConstString.token) != null) {
-        Navigator.pushReplacementNamed(context, Routes.index);
+        Future.delayed(const Duration(milliseconds: 300),
+            () => Navigator.pushReplacementNamed(context, Routes.index));
+        // Navigator.pushReplacementNamed(context, Routes.index);
+      } else {
+        setState(() {
+          this.initLoginStatus = true;
+        });
       }
     });
     loginInfo = {'Email': '', 'Password': ''};
@@ -35,35 +40,34 @@ class _LoginState extends State<Login> {
 
   void login() async {
     print('loginInfo:$loginInfo');
-    setState(() {
-      // isLoding = true;
-      this.widget.notifyParent(true);
-    });
-    var res = await Api.login(loginInfo);
-    if (res.success) {
-      Util.sharedPreferences.setString(ConstString.token, res.data);
-      print(
-          "ConstString.token:" + Util.sharedPreferences.get(ConstString.token));
-      Navigator.pushReplacementNamed(context, Routes.index);
-    } else {
-      Fluttertoast.showToast(
-          msg: res.msg,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
+    try {
+      this.widget.setLoading(true);
+      var res = await Api.login(loginInfo);
+      if (res.success) {
+        Util.sharedPreferences.setString(ConstString.token, res.data);
+        print("ConstString.token:" +
+            Util.sharedPreferences.get(ConstString.token));
+        Navigator.pushReplacementNamed(context, Routes.index);
+      } else {
+        Fluttertoast.showToast(
+            msg: res.msg,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } catch (ex) {
+      print(ex);
+    } finally {
+      this.widget.setLoading(false);
     }
-    setState(() {
-      // isLoding = false;
-      // this.widget.progressDialog.loading.value = false;
-      this.widget.notifyParent(false);
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> widgetList = [];
     var app = Scaffold(
       appBar: AppBar(
         title: Text(I18n.of(context).Login),
@@ -183,23 +187,26 @@ class _LoginState extends State<Login> {
         ],
       ),
     );
-    List<Widget> widgetList = [];
     widgetList.add(app);
-    if (isLoding) {
+    if (!initLoginStatus) {
+      widgetList.add(Scaffold());
       widgetList.add(
         Opacity(
-            opacity: 0.8,
-            child: ModalBarrier(
-              color: Colors.black87,
-            )),
+          opacity: 1,
+          child: ModalBarrier(
+            color: Colors.black87,
+          ),
+        ),
       );
-      widgetList.add(Center(
-        child: CircularProgressIndicator(),
-      ));
+      widgetList.add(
+        Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
     }
     return Stack(
       children: widgetList,
     );
-    // return app;
+    // return initLoginStatus ? app : Scaffold();
   }
 }

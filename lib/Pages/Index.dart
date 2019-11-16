@@ -1,17 +1,19 @@
 import 'package:community/Pages/PostBrowsing.dart';
 import 'package:community/Widget/GeneralDrawer.dart';
+import 'package:community/Widget/ProgressDialog/IProgressDialog.dart';
+import 'package:community/Widget/ProgressDialog/ProgressDialog.dart';
 import 'package:community/Widget/SearchBar.dart';
 import 'package:community/generated/i18n.dart';
 import 'package:flutter/material.dart';
 
-class Index extends StatefulWidget {
+// ignore: must_be_immutable
+class Index extends StatefulWidget with IProgressDialog {
   @override
   _IndexState createState() => _IndexState();
 }
 
 class _IndexState extends State<Index> {
   bool init = false;
-  // bool isVisible = true;
   double bottomNavigationBarHeight = 60;
   int oldIndex = 0;
   int _currentIndex = 0;
@@ -25,10 +27,16 @@ class _IndexState extends State<Index> {
   @override
   void initState() {
     super.initState();
-
-    pages.add(PostBrowsing(notifyParent: refresh));
-    pages.add(PostBrowsing(notifyParent: refresh));
-    pages.add(PostBrowsing(notifyParent: refresh));
+//ProgressDialog(loading: LoadingStatus(false), child: PostBrowsing(notifyParent: refresh)),
+    pages.add(ProgressDialog(
+        loading: LoadingStatus(true),
+        child: PostBrowsing(notifyParent: refresh)));
+    pages.add(ProgressDialog(
+        loading: LoadingStatus(true),
+        child: PostBrowsing(notifyParent: refresh)));
+    pages.add(ProgressDialog(
+        loading: LoadingStatus(true),
+        child: PostBrowsing(notifyParent: refresh)));
   }
 
   void pageChanged(int index) {

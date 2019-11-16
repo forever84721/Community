@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:community/Api/Api.dart';
 import 'package:community/Models/index.dart';
 import 'package:community/Widget/Post.dart';
+import 'package:community/Widget/ProgressDialog/IProgressDialog.dart';
 import 'package:flutter/material.dart';
 
-class PostBrowsing extends StatefulWidget {
+// ignore: must_be_immutable
+class PostBrowsing extends StatefulWidget with IProgressDialog {
   final Function(double h) notifyParent;
-  const PostBrowsing({Key key, this.notifyParent}) : super(key: key);
+  PostBrowsing({Key key, this.notifyParent}) : super(key: key);
   @override
   _PostBrowsingState createState() => _PostBrowsingState();
 }
@@ -47,6 +49,8 @@ class _PostBrowsingState extends State<PostBrowsing>
       setState(() {
         data = res.success ? res.data : [];
       });
+      Future.delayed(
+          const Duration(seconds: 1), () => this.widget.setLoading(false));
     })();
   }
 

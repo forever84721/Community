@@ -1,3 +1,3 @@
 abstract class IProgressDialog {
-  void notifyParent(bool tf);
+  Function(bool tf) setLoading;
 }
