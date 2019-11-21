@@ -5,5 +5,5 @@ class Home implements IEnvironment {
   String apiUrl = "http://192.168.1.198:8080/api";
 
   @override
-  bool production = true;
+  bool production = false;
 }

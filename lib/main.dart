@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final i18n = I18n.delegate;
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: [
         i18n,
         GlobalMaterialLocalizations.delegate,

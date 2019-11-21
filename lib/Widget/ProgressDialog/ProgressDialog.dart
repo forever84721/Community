@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 class ProgressDialog extends StatefulWidget {
   final LoadingStatus loading;
   final IProgressDialog child;
-
   const ProgressDialog({Key key, this.loading, this.child}) : super(key: key);
 
   @override
@@ -14,11 +13,11 @@ class ProgressDialog extends StatefulWidget {
 class _ProgressDialogState extends State<ProgressDialog>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
-
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
+    this.widget.child.setLoading = setLoading;
   }
 
   @override
@@ -36,7 +35,6 @@ class _ProgressDialogState extends State<ProgressDialog>
   @override
   Widget build(BuildContext context) {
     List<Widget> widgetList = [];
-    this.widget.child.setLoading = setLoading;
     widgetList.add(this.widget.child as Widget);
     if (this.widget.loading.value) {
       widgetList.add(

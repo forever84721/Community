@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:community/Common/ConstString.dart';
 import 'package:community/Common/Util.dart';
 import 'package:community/Environments/Environment.dart';
+import 'package:community/Models/RequestModels.dart';
+import 'package:community/Models/ResponseModels.dart';
 import 'package:community/Models/index.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,7 +34,7 @@ class Api {
     return response.body;
   }
 
-  static Future<BaseResponse<String>> login(dynamic data) async {
+  static Future<BaseResponse<String>> login(Map<String, dynamic> data) async {
     var body = await _post("Auth/Login", data);
     return BaseResponse<String>.fromJson(json.decode(body));
   }
@@ -41,5 +43,12 @@ class Api {
     var body = await _get("Post/GetRandomPost");
     print(body);
     return PostViewModelListResponse.fromJson(json.decode(body));
+  }
+
+  static Future<BaseResponse<LikePostResponseModel>> likePost(
+      LikePostRequestModel model) async {
+    var body = await _post("Post/LikePost", model);
+    print(body);
+    return LikePostResponse.fromJson(json.decode(body));
   }
 }

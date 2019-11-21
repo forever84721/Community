@@ -16,7 +16,7 @@ class Login extends StatefulWidget with IProgressDialog {
 
 class _LoginState extends State<Login> {
   Map<String, dynamic> loginInfo;
-  bool isLoding = false;
+  // bool isLoding = false;
   bool initLoginStatus = false;
   @override
   void initState() {
@@ -49,6 +49,7 @@ class _LoginState extends State<Login> {
             Util.sharedPreferences.get(ConstString.token));
         Navigator.pushReplacementNamed(context, Routes.index);
       } else {
+        print(res.msg);
         Fluttertoast.showToast(
             msg: res.msg,
             toastLength: Toast.LENGTH_SHORT,

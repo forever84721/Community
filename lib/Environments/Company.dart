@@ -5,5 +5,5 @@ class Company implements IEnvironment {
   String apiUrl = "http://192.168.20.13:8080/api";
 
   @override
-  bool production = true;
+  bool production = false;
 }

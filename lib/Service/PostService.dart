@@ -1,5 +1,5 @@
 import 'package:community/Api/Api.dart';
-import 'package:community/Models/index.dart';
+import 'package:community/Models/ResponseModels.dart';
 
 class PostService {
   Future<List<PostViewModel>> getRandomPost() async {

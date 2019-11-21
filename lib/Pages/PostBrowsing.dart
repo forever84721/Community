@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:community/Api/Api.dart';
-import 'package:community/Models/index.dart';
+import 'package:community/Models/ResponseModels.dart';
+import 'package:community/Pages/MessageDialog/MessageDialog.dart';
 import 'package:community/Widget/Post.dart';
 import 'package:community/Widget/ProgressDialog/IProgressDialog.dart';
 import 'package:flutter/material.dart';
+// import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 // ignore: must_be_immutable
 class PostBrowsing extends StatefulWidget with IProgressDialog {
@@ -39,6 +41,15 @@ class _PostBrowsingState extends State<PostBrowsing>
     }
   }
 
+  void openMessageDialog(int postId) {
+    print('openMessageDialog$postId');
+    showMessageDialog(
+      context: context,
+      child: Text("Hello World"),
+      backgroundColor: Colors.black,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -64,7 +75,7 @@ class _PostBrowsingState extends State<PostBrowsing>
         // padding: const EdgeInsets.all(8.0),
         controller: _controller,
         children: data.map((item) {
-          return Post(postData: item);
+          return Post(postData: item, openMessageDialog: openMessageDialog);
         }).toList(),
       ),
     );
