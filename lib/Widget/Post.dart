@@ -1,9 +1,9 @@
 import 'package:community/Api/Api.dart';
+import 'package:community/Common/Util.dart';
 import 'package:community/Models/RequestModels.dart';
 import 'package:community/Models/ResponseModels.dart';
 import 'package:community/generated/i18n.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class Post extends StatefulWidget {
   final PostViewModel postData;
@@ -15,7 +15,6 @@ class Post extends StatefulWidget {
 }
 
 class _PostState extends State<Post> {
-  var formatter = new DateFormat('yyyy-MM-dd HH:mm');
   void likePost() {
     int newType = widget.postData.likeType == 0 ? 1 : 0;
     setState(() {
@@ -107,7 +106,7 @@ class _PostState extends State<Post> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       // Text("昨天下午4:49"),
-                      Text(formatter.format(widget.postData.postTime)),
+                      Text(Util.dateTimeToString(widget.postData.postTime)),
                     ],
                   )
                 ],

@@ -51,4 +51,11 @@ class Api {
     print(body);
     return LikePostResponse.fromJson(json.decode(body));
   }
+
+  static Future<ReplyViewModelListResponse> getReply(
+      GetReplyRequestModel model) async {
+    var body = await _post("Post/GetReply", model);
+    print(body);
+    return ReplyViewModelListResponse.fromJson(json.decode(body));
+  }
 }

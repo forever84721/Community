@@ -56,6 +56,16 @@ class LikePostResponse extends BaseResponse<LikePostResponseModel> {
     this.data = LikePostResponseModel.fromJson(parsedJson['Data']);
   }
 }
+
+class ReplyViewModelListResponse extends BaseResponse<List<ReplyViewModel>> {
+  ReplyViewModelListResponse.fromJson(Map<String, dynamic> parsedJson)
+      : super._fromJson(parsedJson) {
+    var list = parsedJson['Data'] as List;
+    List<ReplyViewModel> postViewModelList =
+        list.map((i) => ReplyViewModel.fromJson(i)).toList();
+    this.data = postViewModelList;
+  }
+}
 //========================
 //========================
 //========================

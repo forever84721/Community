@@ -45,7 +45,7 @@ class _PostBrowsingState extends State<PostBrowsing>
     print('openMessageDialog$postId');
     showMessageDialog(
       context: context,
-      child: Text("Hello World"),
+      postId: postId,
       backgroundColor: Colors.black,
     );
   }

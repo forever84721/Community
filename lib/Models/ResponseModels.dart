@@ -59,3 +59,38 @@ class LikePostResponseModel {
     );
   }
 }
+
+class ReplyViewModel {
+  int postReplyId;
+  int issuerId;
+  String name;
+  DateTime postTime;
+  String content;
+
+  ReplyViewModel(
+      {this.issuerId,
+      this.name,
+      this.postReplyId,
+      this.postTime,
+      this.content});
+
+  factory ReplyViewModel.fromJson(Map<String, dynamic> json) {
+    return ReplyViewModel(
+      content: json['Content'],
+      issuerId: json['IssuerId'],
+      name: json['Name'],
+      postReplyId: json['PostReplyId'],
+      postTime: DateTime.parse(json['PostTime']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['Content'] = this.content;
+    data['IssuerId'] = this.issuerId;
+    data['Name'] = this.name;
+    data['PostReplyId'] = this.postReplyId;
+    data['PostTime'] = this.postTime;
+    return data;
+  }
+}

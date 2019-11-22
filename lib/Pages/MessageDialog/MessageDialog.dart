@@ -1,8 +1,12 @@
 // library slide_popup_dialog;
 
+import 'package:community/Api/Api.dart';
+import 'package:community/Models/RequestModels.dart';
+import 'package:community/Models/ResponseModels.dart';
 import 'package:community/Pages/MessageDialog/Message.dart';
 import 'package:community/Pages/MessageDialog/MessageDialogGesture.dart';
 import 'package:community/Pages/MessageDialog/MessageInput.dart';
+import 'package:community/Widget/ProgressDialog/ProgressOutControl.dart';
 import 'package:flutter/material.dart';
 
 /// Display slide dialog.
@@ -13,18 +17,16 @@ import 'package:flutter/material.dart';
 ///
 /// `transitionDuration` Duration of slide transition. Defaults to Duration(milliseconds: 300).
 ///
-/// `pillColor` Color of pill inside dialog. Defaults to Colors.blueGrey[200].
-///
 /// `backgroundColor` Color of dialog background. Defaults to Theme.of(context).canvasColor.
 Future<T> showMessageDialog<T>({
   @required BuildContext context,
-  @required Widget child,
+  @required int postId,
   bool barrierDismissible = true,
   Duration transitionDuration = const Duration(milliseconds: 400),
   Color backgroundColor,
 }) {
   assert(context != null);
-  assert(child != null);
+  assert(postId != null);
 
   return showGeneralDialog(
     context: context,
@@ -40,7 +42,7 @@ Future<T> showMessageDialog<T>({
         transform: Matrix4.translationValues(0.0, curvedValue * -500, 0.0),
         child: Opacity(
           opacity: animation1.value,
-          child: MessageDialog(),
+          child: MessageDialog(postId: postId),
         ),
       );
     },
@@ -48,6 +50,9 @@ Future<T> showMessageDialog<T>({
 }
 
 class MessageDialog extends StatefulWidget {
+  final int postId;
+
+  const MessageDialog({Key key, this.postId}) : super(key: key);
   @override
   _MessageDialogState createState() => _MessageDialogState();
 }
@@ -55,7 +60,29 @@ class MessageDialog extends StatefulWidget {
 class _MessageDialogState extends State<MessageDialog> {
   var _initialPosition = 0.0;
   var _currentPosition = 0.0;
+  var initLoading = true;
   var close = false;
+  List<ReplyViewModel> replyData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    (() async {
+      var res = await Api.getReply(
+          new GetReplyRequestModel(postId: this.widget.postId, page: 1));
+      var ss = setState;
+      setState(() {
+        replyData = res.success ? res.data : [];
+        // initLoading = a;
+        Future.delayed(
+            const Duration(milliseconds: 500),
+            () => ss(() {
+                  initLoading = false;
+                }));
+      });
+    })();
+  }
+
   void _onVerticalDragStart(DragStartDetails drag) {
     setState(() {
       _initialPosition = drag.globalPosition.dy;
@@ -120,17 +147,19 @@ class _MessageDialogState extends State<MessageDialog> {
                       onVerticalDragUpdate: _onVerticalDragUpdate,
                     ),
                     Expanded(
-                      child: ListView(
-                        padding: const EdgeInsets.all(0.0),
-                        // controller: _controller,
-                        children: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) {
-                          return Message(
-                            name: "User$i",
-                            text:
-                                "亂玩上路卡薩丁！對線期逆風還可以出疊書？想戳隊友卻戳不到的痛苦！【TOYZ實況精華】\n拜託來看完整版： https://youtu.be/7iaJkLg2Nwc\n訂閱我的頻道：http://bit.ly/2PlgzF9\n－－－－－－－－－－－－－－－－－－\n邏輯鬼才Toyz！精闢點出兩大實況公司問題？\n黛安娜最新出裝法！只需要贏一把就可以剪...嗎？",
-                          );
-                        }).toList()
-                          ..add(Message(name: "Jay", text: "123456789")),
+                      child: ProgressOutControl(
+                        isLoading: initLoading,
+                        child: ListView(
+                            reverse: true,
+                            padding: const EdgeInsets.all(0.0),
+                            // controller: _controller,
+                            children: replyData.map((reply) {
+                              return Message(
+                                replyViewModel: reply,
+                              );
+                            }).toList()
+                            // ..add(Message(name: "Jay", text: "123456789")),
+                            ),
                       ),
                     ),
                     Container(

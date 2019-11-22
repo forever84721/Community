@@ -1,12 +1,13 @@
+import 'package:community/Common/Util.dart';
+import 'package:community/Models/ResponseModels.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class Message extends StatefulWidget {
-  final String name;
-  final String text;
+  final ReplyViewModel replyViewModel;
 
-  const Message({Key key, @required this.text, @required this.name})
-      : super(key: key);
+  const Message({Key key, this.replyViewModel}) : super(key: key);
+
   @override
   _MessageState createState() => _MessageState();
 }
@@ -65,13 +66,17 @@ class _MessageState extends State<Message> {
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.only(bottom: 2),
-                            child: Text(this.widget.name),
+                            child: Text(this.widget.replyViewModel.name),
                           ),
-                          Text(this.widget.text),
+                          Text(this.widget.replyViewModel.content),
                         ],
                       ),
                     ),
-                    // Text("456"),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Text(Util.dateTimeToString(
+                          this.widget.replyViewModel.postTime)),
+                    ),
                   ],
                 ),
               ),
