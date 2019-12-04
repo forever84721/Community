@@ -4,6 +4,11 @@ class BaseResponse<T> {
   bool success;
   String msg;
   T data;
+  BaseResponse(bool success, String msg, T data) {
+    this.success = success;
+    this.msg = msg;
+    this.data = data;
+  }
 
   BaseResponse._fromJson(Map<String, dynamic> parsedJson) {
     success = parsedJson['Success'];
@@ -58,6 +63,9 @@ class LikePostResponse extends BaseResponse<LikePostResponseModel> {
 }
 
 class ReplyViewModelListResponse extends BaseResponse<List<ReplyViewModel>> {
+  ReplyViewModelListResponse(
+      bool success, String msg, List<ReplyViewModel> data)
+      : super(success, msg, data);
   ReplyViewModelListResponse.fromJson(Map<String, dynamic> parsedJson)
       : super._fromJson(parsedJson) {
     var list = parsedJson['Data'] as List;

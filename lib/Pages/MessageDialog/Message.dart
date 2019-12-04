@@ -20,68 +20,66 @@ class _MessageState extends State<Message> {
       actionExtentRatio: 0.25,
       child: Container(
         color: Colors.white,
-        child: Container(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ClipRRect(
-                      borderRadius: new BorderRadius.circular(50.0),
-                      child: Image.network(
-                        "https://placem.at/places?w=40&h=40&&txtclr=0000&random=2",
-                        width: 40.0,
-                        height: 40.0,
-                      ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipRRect(
+                    borderRadius: new BorderRadius.circular(50.0),
+                    child: Image.network(
+                      "https://placem.at/places?w=40&h=40&&txtclr=0000&random=2",
+                      width: 40.0,
+                      height: 40.0,
                     ),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    constraints: BoxConstraints(
+                        // minWidth: ,
+                        maxWidth:
+                            MediaQuery.of(context).size.width - (40 + 16 + 8)),
+                    // width: MediaQuery.of(context).size.width - (40 + 16 + 8),
+                    decoration: new BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      // border: new Border.all(
+                      //   color: Colors.black,
+                      //   width: 1.0,
+                      // ),
+                      color: Color.fromARGB(120, 200, 200, 200),
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 2),
+                          child: Text(this.widget.replyViewModel.name),
+                        ),
+                        Text(this.widget.replyViewModel.content),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Text(Util.dateTimeToString(
+                        this.widget.replyViewModel.postTime)),
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      constraints: BoxConstraints(
-                          // minWidth: ,
-                          maxWidth: MediaQuery.of(context).size.width -
-                              (40 + 16 + 8)),
-                      // width: MediaQuery.of(context).size.width - (40 + 16 + 8),
-                      decoration: new BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        // border: new Border.all(
-                        //   color: Colors.black,
-                        //   width: 1.0,
-                        // ),
-                        color: Color.fromARGB(120, 200, 200, 200),
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 2),
-                            child: Text(this.widget.replyViewModel.name),
-                          ),
-                          Text(this.widget.replyViewModel.content),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Text(Util.dateTimeToString(
-                          this.widget.replyViewModel.postTime)),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
         // child: ListTile(
         //   leading: CircleAvatar(

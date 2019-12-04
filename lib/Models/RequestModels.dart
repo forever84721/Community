@@ -25,3 +25,24 @@ class GetReplyRequestModel {
     return data;
   }
 }
+
+class ReplyRequestModel {
+  int userId;
+  int replyType;
+  int targetId;
+  String content;
+  ReplyRequestModel(
+      {@required this.userId,
+      @required this.replyType,
+      @required this.targetId,
+      @required this.content});
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['UserId'] = this.userId;
+    data['ReplyType'] = this.replyType;
+    data['TargetId'] = this.targetId;
+    data['Content'] = this.content;
+    return data;
+  }
+}

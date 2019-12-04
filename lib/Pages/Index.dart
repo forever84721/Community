@@ -1,3 +1,4 @@
+import 'package:community/Pages/Notifications.dart';
 import 'package:community/Pages/PostBrowsing.dart';
 import 'package:community/Widget/GeneralDrawer.dart';
 import 'package:community/Widget/ProgressDialog/IProgressDialog.dart';
@@ -27,16 +28,21 @@ class _IndexState extends State<Index> {
   @override
   void initState() {
     super.initState();
-//ProgressDialog(loading: LoadingStatus(false), child: PostBrowsing(notifyParent: refresh)),
+    pages.add(
+      ProgressDialog(
+        loading: LoadingStatus(true),
+        child: PostBrowsing(notifyParent: refresh),
+      ),
+    );
     pages.add(ProgressDialog(
         loading: LoadingStatus(true),
         child: PostBrowsing(notifyParent: refresh)));
-    pages.add(ProgressDialog(
+    pages.add(
+      ProgressDialog(
         loading: LoadingStatus(true),
-        child: PostBrowsing(notifyParent: refresh)));
-    pages.add(ProgressDialog(
-        loading: LoadingStatus(true),
-        child: PostBrowsing(notifyParent: refresh)));
+        child: Notifications(),
+      ),
+    );
   }
 
   void pageChanged(int index) {
@@ -66,13 +72,13 @@ class _IndexState extends State<Index> {
           NavigationBarInfo("", Icon(Icons.picture_in_picture), Colors.blue));
       navigationBars.add(NavigationBarInfo(
           "", Icon(Icons.picture_in_picture_alt), Colors.blue));
-      navigationBars
-          .add(NavigationBarInfo("", Icon(Icons.picture_as_pdf), Colors.blue));
+      navigationBars.add(
+          NavigationBarInfo("", Icon(Icons.notifications_active), Colors.blue));
       init = true;
     }
     return Scaffold(
       drawer: GeneralDrawer(),
-      appBar: SearchBar(title: I18n.of(context).Post),
+      // appBar: SearchBar(title: I18n.of(context).Post),
       bottomNavigationBar: AnimatedContainer(
         duration: Duration(milliseconds: 500),
         height: bottomNavigationBarHeight,

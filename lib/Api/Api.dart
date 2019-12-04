@@ -55,6 +55,17 @@ class Api {
   static Future<ReplyViewModelListResponse> getReply(
       GetReplyRequestModel model) async {
     var body = await _post("Post/GetReply", model);
+    try {
+      print(body);
+      return ReplyViewModelListResponse.fromJson(json.decode(body));
+    } catch (ex) {
+      return ReplyViewModelListResponse(false, ex, []);
+    }
+  }
+
+  static Future<ReplyViewModelListResponse> reply(
+      GetReplyRequestModel model) async {
+    var body = await _post("Post/Reply", model);
     print(body);
     return ReplyViewModelListResponse.fromJson(json.decode(body));
   }
