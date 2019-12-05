@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:community/Api/Api.dart';
 import 'package:community/Models/ResponseModels.dart';
 import 'package:community/Pages/MessageDialog/MessageDialog.dart';
+import 'package:community/Widget/GeneralDrawer.dart';
 import 'package:community/Widget/Post.dart';
 import 'package:community/Widget/ProgressDialog/IProgressDialog.dart';
 import 'package:community/Widget/SearchBar.dart';
@@ -22,20 +23,31 @@ class _PostBrowsingState extends State<PostBrowsing>
     with AutomaticKeepAliveClientMixin {
   List<PostViewModel> data = [];
   double oldOffset = 0;
-  ScrollController _controller;
+  ScrollController scrollcontroller;
   bool delay = false;
   bool showAppBar = true;
-  double deltaH = 0;
+  bool bottomdelay = false;
+  int delayms = 500;
+  // double deltaH = 0;
   _scrollListener() {
-    deltaH = oldOffset - _controller.offset;
-    if (!delay) {
+    if (scrollcontroller.position.atEdge && scrollcontroller.offset > 0) {
+      bottomdelay = true;
+      Timer(Duration(milliseconds: 3000), () {
+        bottomdelay = false;
+      });
+    }
+    if (!delay && !bottomdelay) {
+      var deltaH = oldOffset - scrollcontroller.offset;
       if (deltaH < 0) {
         deltaH = 0;
       } else if (deltaH > 0) {
         deltaH = 60;
       }
       delay = true;
-      oldOffset = _controller.offset;
+      // print(scrollcontroller.offset);
+      // print(scrollcontroller.initialScrollOffset);
+
+      oldOffset = scrollcontroller.offset;
       setState(() {
         showAppBar = deltaH != 0;
         widget.notifyParent(deltaH);
@@ -58,8 +70,8 @@ class _PostBrowsingState extends State<PostBrowsing>
   @override
   void initState() {
     super.initState();
-    _controller = ScrollController();
-    _controller.addListener(_scrollListener);
+    scrollcontroller = ScrollController();
+    scrollcontroller.addListener(_scrollListener);
     (() async {
       var res = await Api.getRandomPost();
       setState(() {
@@ -74,14 +86,15 @@ class _PostBrowsingState extends State<PostBrowsing>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      drawer: GeneralDrawer(),
       appBar: SearchBar(
         title: I18n.of(context).Post,
         visible: SearchBarVisible(value: showAppBar),
       ),
       backgroundColor: Colors.grey,
       body: ListView(
-        padding: EdgeInsets.only(bottom: deltaH),
-        controller: _controller,
+        padding: EdgeInsets.only(bottom: 0),
+        controller: scrollcontroller,
         children: data.map((item) {
           return Post(postData: item, openMessageDialog: openMessageDialog);
         }).toList(),

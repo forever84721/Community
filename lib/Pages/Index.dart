@@ -1,10 +1,10 @@
 import 'package:community/Pages/Notifications.dart';
 import 'package:community/Pages/PostBrowsing.dart';
-import 'package:community/Widget/GeneralDrawer.dart';
+// import 'package:community/Widget/GeneralDrawer.dart';
 import 'package:community/Widget/ProgressDialog/IProgressDialog.dart';
 import 'package:community/Widget/ProgressDialog/ProgressDialog.dart';
-import 'package:community/Widget/SearchBar.dart';
-import 'package:community/generated/i18n.dart';
+// import 'package:community/Widget/SearchBar.dart';
+// import 'package:community/generated/i18n.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -77,7 +77,7 @@ class _IndexState extends State<Index> {
       init = true;
     }
     return Scaffold(
-      drawer: GeneralDrawer(),
+      // drawer: GeneralDrawer(),
       // appBar: SearchBar(title: I18n.of(context).Post),
       bottomNavigationBar: AnimatedContainer(
         duration: Duration(milliseconds: 500),

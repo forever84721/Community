@@ -30,10 +30,10 @@ class _SearchBarState extends State<SearchBar> {
   Widget build(BuildContext context) {
     return AnimatedOpacity(
       opacity: this.widget.visible.value ? 1.0 : 0.0,
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: 500),
       child: AnimatedContainer(
         height: this.widget.visible.value ? 100.0 : 0.0,
-        duration: Duration(milliseconds: 1000),
+        duration: Duration(milliseconds: 500),
         child: Scaffold(
           appBar: AppBar(
               leading: new IconButton(
