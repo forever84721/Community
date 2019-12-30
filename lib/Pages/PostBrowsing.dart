@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class PostBrowsing extends StatefulWidget with IProgressDialog {
-  final Function(double h) notifyParent;
+  final void Function(double h) notifyParent;
   PostBrowsing({Key key, this.notifyParent}) : super(key: key);
   @override
   _PostBrowsingState createState() => _PostBrowsingState();
@@ -30,13 +30,14 @@ class _PostBrowsingState extends State<PostBrowsing>
   bool bottomdelay = false;
   int delayms = 500;
   bool isLoading = false;
+  bool noMoreData = false;
   int courentPage = 1;
   HashSet<int> postIdSet;
   // double deltaH = 0;
   _scrollListener() {
     if (scrollcontroller.position.atEdge && scrollcontroller.offset > 0) {
       print('bottom!');
-      if (!isLoading) {
+      if (!isLoading && !noMoreData) {
         isLoading = true;
         courentPage++;
         (() async {
@@ -51,15 +52,20 @@ class _PostBrowsingState extends State<PostBrowsing>
               //     data.add(item);
               //   }
               // }
-              data.add(new PostViewModel(postId: -1));
+              data.add(new PostViewModel(
+                postId: -1,
+              ));
             });
           } else {
+            noMoreData = true;
             setState(() {
               data.removeLast();
               data.add(new PostViewModel(postId: -2));
             });
           }
-          Future.delayed(const Duration(seconds: 1), () => isLoading = false);
+          isLoading = false;
+          // Future.delayed(
+          //     const Duration(milliseconds: 100), () => isLoading = false);
         })();
       }
       bottomdelay = true;
@@ -98,7 +104,14 @@ class _PostBrowsingState extends State<PostBrowsing>
     );
   }
 
-  Future readPost() async {}
+  void refresh() {
+    var scrollTask = scrollcontroller.animateTo(
+      0.0,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 600),
+    );
+    init(scrollTask: scrollTask);
+  }
 
   @override
   void initState() {
@@ -106,16 +119,38 @@ class _PostBrowsingState extends State<PostBrowsing>
     postIdSet = new HashSet();
     scrollcontroller = ScrollController();
     scrollcontroller.addListener(_scrollListener);
-    (() async {
-      var res = await Api.getRandomPost(courentPage);
-      setState(() {
-        data = res.success ? res.data : [];
-      });
-      data.add(new PostViewModel(postId: -1));
-      postIdSet.addAll(data.map((a) => a.postId));
-      Future.delayed(
-          const Duration(seconds: 1), () => this.widget.setLoading(false));
-    })();
+    init();
+  }
+
+// ignore: avoid_init_to_null
+  Future init({Future<void> scrollTask = null}) async {
+    noMoreData = false;
+    courentPage = 1;
+    var res = await Api.getRandomPost(courentPage);
+    if (scrollTask != null) {
+      await scrollTask;
+    }
+    setState(() {
+      data = res.success ? res.data : [];
+    });
+    data.add(new PostViewModel(postId: -1));
+    postIdSet.addAll(data.map((a) => a.postId));
+    await Future.delayed(
+        const Duration(milliseconds: 500), () => this.widget.setLoading(false));
+    // await (() async {
+    //   var res = await Api.getRandomPost(courentPage);
+    //   if (scrollTask != null) {
+    //     await scrollTask;
+    //   }
+    //   setState(() {
+    //     data = res.success ? res.data : [];
+    //   });
+    //   data.add(new PostViewModel(postId: -1));
+    //   postIdSet.addAll(data.map((a) => a.postId));
+    //   await Future.delayed(const Duration(milliseconds: 500),
+    //       () => this.widget.setLoading(false));
+    // })();
+    return;
   }
 
   @override
@@ -128,12 +163,20 @@ class _PostBrowsingState extends State<PostBrowsing>
         visible: SearchBarVisible(value: showAppBar),
       ),
       backgroundColor: Colors.grey,
-      body: ListView(
-        padding: EdgeInsets.only(bottom: 0),
-        controller: scrollcontroller,
-        children: data.map((item) {
-          return Post(postData: item, openMessageDialog: openMessageDialog);
-        }).toList(),
+      body: RefreshIndicator(
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.only(bottom: 0),
+          controller: scrollcontroller,
+          children: data.map((item) {
+            return Post(
+              postData: item,
+              openMessageDialog: openMessageDialog,
+              refresh: refresh,
+            );
+          }).toList(),
+        ),
+        onRefresh: init,
       ),
     );
   }

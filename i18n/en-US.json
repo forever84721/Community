@@ -6,5 +6,7 @@
   "Login": "Login",
   "Like": "Like",
   "Comment": "Comment",
-  "Share": "Share"
+  "Share": "Share",
+  "NoMoreData": "No More Data",
+  "refresh": "Click to refresh"
 }

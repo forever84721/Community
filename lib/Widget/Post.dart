@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 class Post extends StatefulWidget {
   final PostViewModel postData;
   final Function(int postId) openMessageDialog;
-  const Post({Key key, this.postData, this.openMessageDialog})
+  final Function() refresh;
+  const Post({Key key, this.postData, this.openMessageDialog, this.refresh})
       : super(key: key);
   @override
   _PostState createState() => _PostState();
@@ -81,10 +82,21 @@ class _PostState extends State<Post> {
       );
     }
     if (widget.postData.postId == -2) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text("沒有資料了"),
+      return Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: this.widget.refresh,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: <Widget>[
+                  Text(I18n.of(context).NoMoreData),
+                  Text(I18n.of(context).refresh),
+                ],
+              ),
+            ),
+          ),
         ),
       );
     }

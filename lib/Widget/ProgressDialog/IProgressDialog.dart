@@ -1,3 +1,3 @@
 abstract class IProgressDialog {
-  Function(bool tf) setLoading;
+  void Function(bool tf) setLoading;
 }

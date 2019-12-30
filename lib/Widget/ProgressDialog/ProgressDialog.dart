@@ -12,18 +12,15 @@ class ProgressDialog extends StatefulWidget {
 
 class _ProgressDialogState extends State<ProgressDialog>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this);
     this.widget.child.setLoading = setLoading;
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
   }
 
   void setLoading(bool tf) {

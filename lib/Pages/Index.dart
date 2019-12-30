@@ -34,9 +34,12 @@ class _IndexState extends State<Index> {
         child: PostBrowsing(notifyParent: refresh),
       ),
     );
-    pages.add(ProgressDialog(
+    pages.add(
+      ProgressDialog(
         loading: LoadingStatus(true),
-        child: PostBrowsing(notifyParent: refresh)));
+        child: PostBrowsing(notifyParent: refresh),
+      ),
+    );
     pages.add(
       ProgressDialog(
         loading: LoadingStatus(true),
