@@ -165,7 +165,7 @@ class _PostBrowsingState extends State<PostBrowsing>
       backgroundColor: Colors.grey,
       body: RefreshIndicator(
         child: ListView(
-          physics: const AlwaysScrollableScrollPhysics(),
+          // physics: const AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.only(bottom: 0),
           controller: scrollcontroller,
           children: data.map((item) {

@@ -67,20 +67,37 @@ class _MessageDialogState extends State<MessageDialog> {
   @override
   void initState() {
     super.initState();
-    (() async {
-      var res = await Api.getReply(
-          new GetReplyRequestModel(postId: this.widget.postId, page: 1));
-      var ss = setState;
-      setState(() {
-        replyData = res.success ? res.data : [];
-        // initLoading = a;
-        Future.delayed(
-            const Duration(milliseconds: 500),
-            () => ss(() {
-                  initLoading = false;
-                }));
-      });
-    })();
+    // (() async {
+    // })();
+    init();
+  }
+
+  Future init() async {
+    setState(() {
+      initLoading = true;
+    });
+    var res = await Api.getReply(
+        new GetReplyRequestModel(postId: this.widget.postId, page: 1));
+    var ss = setState;
+    setState(() {
+      replyData = res.success ? res.data : [];
+      // initLoading = a;
+      Future.delayed(
+          const Duration(milliseconds: 300),
+          () => ss(() {
+                initLoading = false;
+              }));
+    });
+  }
+
+  Future<bool> replyPost(String text) async {
+    print("replyPost" + text);
+    var res = await Api.reply(new ReplyRequestModel(
+        userId: -1, content: text, targetId: this.widget.postId, replyType: 1));
+    if (res.success) {
+      init();
+    }
+    return res.success;
   }
 
   void _onVerticalDragStart(DragStartDetails drag) {
@@ -172,7 +189,9 @@ class _MessageDialogState extends State<MessageDialog> {
                           ),
                         ),
                       ),
-                      child: MessageInput(),
+                      child: MessageInput(
+                        reply: replyPost,
+                      ),
                     ),
                   ],
                 ),

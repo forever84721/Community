@@ -64,10 +64,9 @@ class Api {
     }
   }
 
-  static Future<ReplyViewModelListResponse> reply(
-      GetReplyRequestModel model) async {
+  static Future<BaseResponse<int>> reply(ReplyRequestModel model) async {
     var body = await _post("Post/Reply", model);
     print(body);
-    return ReplyViewModelListResponse.fromJson(json.decode(body));
+    return BaseResponse<int>.fromJson(json.decode(body));
   }
 }

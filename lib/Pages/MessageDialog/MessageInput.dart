@@ -1,9 +1,29 @@
 import 'package:flutter/material.dart';
 
-class MessageInput extends StatelessWidget {
+class MessageInput extends StatefulWidget {
+  final Future<bool> Function(String text) reply;
   const MessageInput({
     Key key,
+    @required this.reply,
   }) : super(key: key);
+
+  @override
+  _MessageInputState createState() => _MessageInputState();
+}
+
+class _MessageInputState extends State<MessageInput> {
+  TextEditingController textEditingController;
+  @override
+  void initState() {
+    super.initState();
+    textEditingController = new TextEditingController();
+  }
+
+  void reply() async {
+    if (await this.widget.reply(textEditingController.text)) {
+      textEditingController.text = "";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +45,7 @@ class MessageInput extends StatelessWidget {
             // height: 2.0,
             color: Colors.black,
           ),
+          controller: textEditingController,
           decoration: new InputDecoration(
             // border: new OutlineInputBorder(
             //   borderSide: new BorderSide(color: Colors.red),
@@ -46,13 +67,13 @@ class MessageInput extends StatelessWidget {
                 child: Icon(Icons.camera_alt),
               ),
             ),
-            prefixText: ' ',
+            // prefixText: ' ',
             // suffixText: 'USD',
             // suffixStyle:
             //     const TextStyle(color: Colors.green)
             suffixIcon: Material(
               child: InkWell(
-                onTap: () => print('object'),
+                onTap: reply,
                 child: Icon(Icons.send),
               ),
             ),
