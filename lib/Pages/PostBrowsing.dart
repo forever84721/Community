@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:community/Api/Api.dart';
 import 'package:community/Models/ResponseModels.dart';
@@ -28,9 +29,39 @@ class _PostBrowsingState extends State<PostBrowsing>
   bool showAppBar = true;
   bool bottomdelay = false;
   int delayms = 500;
+  bool isLoading = false;
+  int courentPage = 1;
+  HashSet<int> postIdSet;
   // double deltaH = 0;
   _scrollListener() {
     if (scrollcontroller.position.atEdge && scrollcontroller.offset > 0) {
+      print('bottom!');
+      if (!isLoading) {
+        isLoading = true;
+        courentPage++;
+        (() async {
+          var res = await Api.getRandomPost(courentPage);
+          await Future.delayed(const Duration(seconds: 1));
+          if (res.success && res.data.length > 0) {
+            setState(() {
+              data.removeLast();
+              data.addAll(res.data.where((a) => !postIdSet.contains(a.postId)));
+              // for (var item in res.data) {
+              //   if (!postIdSet.contains(item.postId)) {
+              //     data.add(item);
+              //   }
+              // }
+              data.add(new PostViewModel(postId: -1));
+            });
+          } else {
+            setState(() {
+              data.removeLast();
+              data.add(new PostViewModel(postId: -2));
+            });
+          }
+          Future.delayed(const Duration(seconds: 1), () => isLoading = false);
+        })();
+      }
       bottomdelay = true;
       Timer(Duration(milliseconds: 3000), () {
         bottomdelay = false;
@@ -67,16 +98,21 @@ class _PostBrowsingState extends State<PostBrowsing>
     );
   }
 
+  Future readPost() async {}
+
   @override
   void initState() {
     super.initState();
+    postIdSet = new HashSet();
     scrollcontroller = ScrollController();
     scrollcontroller.addListener(_scrollListener);
     (() async {
-      var res = await Api.getRandomPost();
+      var res = await Api.getRandomPost(courentPage);
       setState(() {
         data = res.success ? res.data : [];
       });
+      data.add(new PostViewModel(postId: -1));
+      postIdSet.addAll(data.map((a) => a.postId));
       Future.delayed(
           const Duration(seconds: 1), () => this.widget.setLoading(false));
     })();

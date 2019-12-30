@@ -72,6 +72,22 @@ class _PostState extends State<Post> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.postData.postId == -1) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    if (widget.postData.postId == -2) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text("沒有資料了"),
+        ),
+      );
+    }
     return ClipRRect(
       borderRadius: new BorderRadius.circular(10.0),
       child: Padding(

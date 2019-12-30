@@ -39,8 +39,9 @@ class Api {
     return BaseResponse<String>.fromJson(json.decode(body));
   }
 
-  static Future<BaseResponse<List<PostViewModel>>> getRandomPost() async {
-    var body = await _get("Post/GetRandomPost");
+  static Future<BaseResponse<List<PostViewModel>>> getRandomPost(
+      int page) async {
+    var body = await _get("Post/GetRandomPost/$page");
     print(body);
     return PostViewModelListResponse.fromJson(json.decode(body));
   }
@@ -59,7 +60,7 @@ class Api {
       print(body);
       return ReplyViewModelListResponse.fromJson(json.decode(body));
     } catch (ex) {
-      return ReplyViewModelListResponse(false, ex, []);
+      return ReplyViewModelListResponse(false, ex.toString(), []);
     }
   }
 
