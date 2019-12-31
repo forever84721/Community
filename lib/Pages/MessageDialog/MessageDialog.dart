@@ -172,7 +172,10 @@ class _MessageDialogState extends State<MessageDialog> {
                             // controller: _controller,
                             children: replyData.map((reply) {
                               return Message(
-                                replyViewModel: reply,
+                                name: reply.name,
+                                issuerId: reply.issuerId,
+                                postTime: reply.postTime,
+                                content: reply.content,
                               );
                             }).toList()
                             // ..add(Message(name: "Jay", text: "123456789")),
@@ -190,7 +193,7 @@ class _MessageDialogState extends State<MessageDialog> {
                         ),
                       ),
                       child: MessageInput(
-                        reply: replyPost,
+                        send: replyPost,
                       ),
                     ),
                   ],

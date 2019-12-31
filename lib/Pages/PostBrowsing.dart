@@ -47,11 +47,6 @@ class _PostBrowsingState extends State<PostBrowsing>
             setState(() {
               data.removeLast();
               data.addAll(res.data.where((a) => !postIdSet.contains(a.postId)));
-              // for (var item in res.data) {
-              //   if (!postIdSet.contains(item.postId)) {
-              //     data.add(item);
-              //   }
-              // }
               data.add(new PostViewModel(
                 postId: -1,
               ));
@@ -165,7 +160,7 @@ class _PostBrowsingState extends State<PostBrowsing>
       backgroundColor: Colors.grey,
       body: RefreshIndicator(
         child: ListView(
-          // physics: const AlwaysScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.only(bottom: 0),
           controller: scrollcontroller,
           children: data.map((item) {

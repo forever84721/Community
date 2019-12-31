@@ -1,3 +1,4 @@
+import 'package:community/Pages/ChatRoom/ChatRoom.dart';
 import 'package:community/Pages/Notifications.dart';
 import 'package:community/Pages/PostBrowsing.dart';
 // import 'package:community/Widget/GeneralDrawer.dart';
@@ -37,7 +38,7 @@ class _IndexState extends State<Index> {
     pages.add(
       ProgressDialog(
         loading: LoadingStatus(true),
-        child: PostBrowsing(notifyParent: refresh),
+        child: ChatRoom(notifyParent: refresh),
       ),
     );
     pages.add(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MessageInput extends StatefulWidget {
-  final Future<bool> Function(String text) reply;
+  final Future<bool> Function(String text) send;
   const MessageInput({
     Key key,
-    @required this.reply,
+    @required this.send,
   }) : super(key: key);
 
   @override
@@ -19,8 +19,8 @@ class _MessageInputState extends State<MessageInput> {
     textEditingController = new TextEditingController();
   }
 
-  void reply() async {
-    if (await this.widget.reply(textEditingController.text)) {
+  void send() async {
+    if (await this.widget.send(textEditingController.text)) {
       textEditingController.text = "";
     }
   }
@@ -73,7 +73,7 @@ class _MessageInputState extends State<MessageInput> {
             //     const TextStyle(color: Colors.green)
             suffixIcon: Material(
               child: InkWell(
-                onTap: reply,
+                onTap: send,
                 child: Icon(Icons.send),
               ),
             ),

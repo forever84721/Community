@@ -94,3 +94,30 @@ class ReplyViewModel {
     return data;
   }
 }
+
+class ChatViewModel {
+  int issuerId;
+  String name;
+  DateTime postTime;
+  String content;
+
+  ChatViewModel({this.issuerId, this.name, this.postTime, this.content});
+
+  factory ChatViewModel.fromJson(Map<String, dynamic> json) {
+    return ChatViewModel(
+      content: json['Content'],
+      issuerId: json['IssuerId'],
+      name: json['Name'],
+      postTime: DateTime.parse(json['PostTime']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['Content'] = this.content;
+    data['IssuerId'] = this.issuerId;
+    data['Name'] = this.name;
+    data['PostTime'] = this.postTime;
+    return data;
+  }
+}
