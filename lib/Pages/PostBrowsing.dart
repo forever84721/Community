@@ -159,17 +159,18 @@ class _PostBrowsingState extends State<PostBrowsing>
       ),
       backgroundColor: Colors.grey,
       body: RefreshIndicator(
-        child: ListView(
+        child: ListView.builder(
           physics: const AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.only(bottom: 0),
           controller: scrollcontroller,
-          children: data.map((item) {
+          itemBuilder: (context, index) {
             return Post(
-              postData: item,
+              postData: data[index],
               openMessageDialog: openMessageDialog,
               refresh: refresh,
             );
-          }).toList(),
+          },
+          itemCount: data.length,
         ),
         onRefresh: init,
       ),

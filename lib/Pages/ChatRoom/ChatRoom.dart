@@ -1,4 +1,5 @@
 // import 'package:flutter/cupertino.dart';
+
 import 'package:community/Models/ResponseModels.dart';
 import 'package:community/Pages/MessageDialog/Message.dart';
 import 'package:community/Pages/MessageDialog/MessageInput.dart';
@@ -14,58 +15,77 @@ class ChatRoom extends StatefulWidget with IProgressDialog {
   _ChatRoomState createState() => _ChatRoomState();
 }
 
-class _ChatRoomState extends State<ChatRoom> {
-  // The location of the SignalR Server.
+class _ChatRoomState extends State<ChatRoom>
+    with AutomaticKeepAliveClientMixin {
   static String serverUrl = "http://192.168.20.13:8080/api/chatHub";
-// Creates the connection by using the HubConnectionBuilder.
-  // final hubConnection = HubConnectionBuilder().withUrl(serverUrl).build();
-// When the connection is closed, print out a message to the console.
-// final hubConnection.onclose( (error) => print("Connection Closed"));
+  HubConnection hubConnection =
+      HubConnectionBuilder().withUrl(serverUrl).build();
   List<ChatViewModel> chatData = [];
+  ScrollController _scrollController;
   @override
   void initState() {
     super.initState();
     // this.widget.setLoading(false);
-
+    _scrollController = new ScrollController();
     (() async {
-      var hubConnection = HubConnectionBuilder().withUrl(serverUrl).build();
+      hubConnection.onclose((error) => print("Connection Closed"));
       await hubConnection.start();
       // final result = await hubConnection.invoke("MethodOneSimpleParameterSimpleReturnValue", args: <Object>["ParameterValue"]);
       hubConnection.on("ServerMessage", _handleAClientProvidedFunction);
-
       Future.delayed(const Duration(milliseconds: 800),
           () => this.widget.setLoading(false));
       setState(() {
-        for (var i = 0; i < 10; i++) {
-          chatData.add(new ChatViewModel(
-              issuerId: i,
-              name: "name$i",
-              postTime: DateTime.now().add(Duration(minutes: -i)),
-              content: "test$i"));
-        }
+        // for (var i = 0; i < 10; i++) {
+        //   chatData.add(new ChatViewModel(
+        //       issuerId: i,
+        //       name: "name$i",
+        //       postTime: DateTime.now().add(Duration(minutes: -i)),
+        //       content: "test$i"));
+        // }
       });
     })();
   }
 
   void _handleAClientProvidedFunction(List<Object> parameters) {
-    print(parameters);
+    var asd = ChatViewModel.fromJson(parameters[0]); // as Map<String, dynamic>
     setState(() {
-      chatData.add(new ChatViewModel(
-          issuerId: 123,
-          name: parameters[0],
-          postTime: DateTime.now(),
-          content: parameters[0]));
+      chatData.add(asd);
+      if (_scrollController.position.atEdge && _scrollController.offset > 0) {
+        Future.delayed(
+            const Duration(milliseconds: 100),
+            () => _scrollController.animateTo(
+                  _scrollController.position.maxScrollExtent,
+                  curve: Curves.easeOut,
+                  duration: const Duration(milliseconds: 500),
+                ));
+      }
     });
+  }
+
+  Future<bool> send(String text) async {
+    print("send:" + text);
+    try {
+      await hubConnection.invoke("ClientMessage", args: <Object>[
+        ChatViewModel(
+            issuerId: 0, name: "Flutter", postTime: null, content: text)
+      ]);
+      return true;
+    } catch (e /*,s*/) {
+      print(e);
+      return false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SafeArea(
       child: Column(
         children: <Widget>[
           Expanded(
             child: ListView.builder(
               // reverse: true,
+              controller: _scrollController,
               itemCount: chatData.length,
               itemBuilder: (BuildContext ctxt, int index) => Message(
                   name: chatData[index].name,
@@ -75,10 +95,13 @@ class _ChatRoomState extends State<ChatRoom> {
             ),
           ),
           MessageInput(
-            send: null,
+            send: send,
           )
         ],
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
